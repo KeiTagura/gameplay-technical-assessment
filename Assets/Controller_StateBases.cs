@@ -13,6 +13,7 @@ public sealed class Controller_StateBases : MonoBehaviour
         [SerializeField] private Character _Character;
         [SerializeField] private StateAirborne _Jump;
         [SerializeField] private StateBase _Attack;
+        [SerializeField] private StateHeavyAttack attackHeavy;
     
         Vector2 moveVect;
         [SerializeField]
@@ -24,9 +25,9 @@ public sealed class Controller_StateBases : MonoBehaviour
         private StateMachine<StateBase>.InputBuffer _InputBuffer;
 
         
-
         private void Awake()
         {
+            ClearHits();
             _InputBuffer = new StateMachine<StateBase>.InputBuffer(_Character.StateMachine);
         }
 
@@ -35,6 +36,7 @@ public sealed class Controller_StateBases : MonoBehaviour
         private void Update()
         {
            // UpdateMovement();
+            UpdateCombo();
             UpdateActions();
         }
 
@@ -65,40 +67,91 @@ public sealed class Controller_StateBases : MonoBehaviour
                 right * input.x +
                 forward * input.y;
         }
-    public void UpdateMovement_InputAction(InputAction.CallbackContext _context)
-        {
-            if (_context.performed)
-                {
-                    moveVect = _context.ReadValue<Vector2>();
-                }
-            else if (_context.canceled)
-                {
-                    moveVect = default;
-                }
-        }
+
+        public void UpdateMovement_InputAction(InputAction.CallbackContext _context)
+            {
+                if (_context.performed)
+                    {
+                        moveVect = _context.ReadValue<Vector2>();
+                    }
+                else if (_context.canceled)
+                    {
+                        moveVect = default;
+                    }
+            }
 
         /************************************************************************************************************************/
         bool attack = false;
         public void AttackAction() => attack = true;
-          
+        
+
+
+        public bool IsClear = true;
+        public Collider leftCollider;
+        public Collider rightCollider;
+        bool leftHit = false;
+        bool rightHit = false;
+
+        
+        public void ClearHits()
+        {
+            leftHit = false;
+            rightHit = false;
+            leftCollider.gameObject.SetActive(false);
+            rightCollider.gameObject.SetActive(false);
+
+        }
+        public void LeftHit()
+        {
+            Debug.Log("Hit Left");
+            leftHit = true;
+        }
+    
+        public void RightHit()
+        {
+            Debug.Log("Hit Right");
+            rightHit = true;
+        }
+
+    public void LeftActive()
+            {
+                leftCollider.gameObject.SetActive(true);
+            }
+        public void LeftInactive()
+            {
+                leftCollider.gameObject.SetActive(false);
+            }
+        public void RightActive()
+            {
+                rightCollider.gameObject.SetActive(true);
+            }
+        public void RightInactive()
+            {
+                rightCollider.gameObject.SetActive(false);
+            }
+
+        void UpdateCombo()
+            {
+                if(leftHit && rightHit)
+                    {
+                        ClearHits();
+                        attackHeavy.combo = true;
+                    }
+            }
         private void UpdateActions()
         {
-          /*  // Jump gets priority for better platforming.
-            if (ExampleInput.SpaceDown)
-            {
-                _Jump.TryJump();
-            }
-            else if (ExampleInput.SpaceUp)
-            {
-                _Jump.CancelJump();
-            }*/
+            if(attackHeavy.combo)
+                {
+                    _InputBuffer.Buffer(attackHeavy, 0);
+                }
+
             if (attack)
                 {
-                    logger.Log("has attacked");
                     _InputBuffer.Buffer(_Attack, _AttackInputTimeOut);
                 }
+
+        _InputBuffer.Update();
             attack = false;
-            _InputBuffer.Update();
         }
 
         /************************************************************************************************************************/

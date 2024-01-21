@@ -27,7 +27,7 @@ public class StateAttack : StateBase
 
         public override bool CanEnterState => true;
 
-
+        public bool canCombo = false;
         /// <summary>
         /// Start at the beginning of the sequence by default, but if the previous attack hasn't faded out yet then
         /// perform the next attack instead.
@@ -43,7 +43,10 @@ public class StateAttack : StateBase
             {
                 _CurrentAnimationIndex++;
             }
-
+            if(_CurrentAnimationIndex > 1)
+                {
+                    if(!canCombo) _CurrentAnimationIndex = 0;
+                }
             _CurrentAnimation = _Animations[_CurrentAnimationIndex];
             Character.Animancer.Play(_CurrentAnimation);
             Character.Parameters.ForwardSpeed = 0;
@@ -59,12 +62,11 @@ public class StateAttack : StateBase
 
         public override bool FullMovementControl => false;
 
-
         private void FixedUpdate()
         {
             if (Character.CheckMotionState())
                 return;
-            Character.Movement.TurnTowards(Character.Parameters.MovementDirection, _TurnSpeed);
+            Character.Movement.TurnTowards((Target.position - transform.position).normalized, _TurnSpeed);
         }
 
 
@@ -78,44 +80,6 @@ public class StateAttack : StateBase
 
         public override bool CanExitState
             => _CurrentAnimation.State.NormalizedTime >= _CurrentAnimation.State.Events.NormalizedEndTime;
-    /*
-         [SerializeField, DegreesPerSecond] private float _TurnSpeed = 400;
-         [SerializeField] private UnityEvent _SetWeaponOwner;// See the Read Me.
-         [SerializeField] private UnityEvent _OnStart;// See the Read Me.
-         [SerializeField] private UnityEvent _OnEnd;// See the Read Me.
-         [SerializeField] private ClipTransition[] _Animations;
-
-         private int _CurrentAnimationIndex = int.MaxValue;
-         private ClipTransition _CurrentAnimation;
-         //public override bool CanEnterState => Character.Movement.IsGrounded;
-         private void OnEnable()
-             {
-                 if (_CurrentAnimationIndex >= _Animations.Length - 1 ||
-                     _Animations[_CurrentAnimationIndex].State.Weight == 0)
-                 {
-                     _CurrentAnimationIndex = 0;
-                 }
-                 else
-                 {
-                     _CurrentAnimationIndex++;
-                 }
-
-                 _CurrentAnimation = _Animations[_CurrentAnimationIndex];
-                 Character.Animancer.Play(_CurrentAnimation);
-
-                 _OnStart.Invoke();
-             }
-         private void OnDisable()
-             {
-                 _OnEnd.Invoke();
-             }
-         private void FixedUpdate()
-         {
-         if (Character.CheckMotionState())
-             return;
-         }
-         public override bool CanExitState
-             => _CurrentAnimation.State.NormalizedTime >= _CurrentAnimation.State.Events.NormalizedEndTime;
-      */
+    
 
     }

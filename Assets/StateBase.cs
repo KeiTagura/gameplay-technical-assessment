@@ -25,6 +25,9 @@ using UnityEngine;
         [SerializeField]
         private Character _Character;
         public Character Character => _Character;
+        [SerializeField]
+        private Transform target;
+        public Transform Target => target;
         public StateMachine<StateBase> OwnerStateMachine => _Character.StateMachine;
         public virtual bool StickToGround => true;
         public virtual Vector3 RootMotion => _Character.Animancer.Animator.deltaPosition;
