@@ -61,12 +61,12 @@ public class StateStrafe : StateBase
                 return;
               //  Character.Movement.UpdateSpeedControl();
                 _Strafe.State.Parameter = new Vector2(Character.Parameters.MovementDirection.x, Character.Parameters.MovementDirection.z);
-                //UpdateRotation();
+                UpdateRotation();
         
 
         }
     private void UpdateRotation()
         {
-            //Character.Movement.TurnTowards((Target.position - transform.position).normalized, 400);
+            Character.Movement.TurnTowards((Target.position - transform.position).normalized, 400);
         }
     }
