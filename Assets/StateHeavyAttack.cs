@@ -12,8 +12,6 @@ public class StateHeavyAttack : StateBase
     [SerializeField, DegreesPerSecond] private float _TurnSpeed = 400;
     [SerializeField] private ClipTransition chargeAttack;
     [SerializeField] private ClipTransition heavyAttack;
-    [SerializeField] private UnityEvent _OnEnterState;// See the Read Me.
-    [SerializeField] private UnityEvent _OnExitState;// See the Read Me.
 
 
     public bool combo = false;
@@ -31,14 +29,11 @@ public class StateHeavyAttack : StateBase
     private void OnEnable()
         {
             Character.Animancer.Play(chargeAttack);
-            _OnEnterState.Invoke();
         }
 
     private void OnDisable()
         {
-            _OnExitState.Invoke();
             combo = false;
-        OnEnable();
         }
     private void FixedUpdate()
         {

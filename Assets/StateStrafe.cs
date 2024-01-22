@@ -1,14 +1,10 @@
 using Animancer;
-using Kei;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class StateStrafe : StateBase
 {
-
-    [SerializeField]
-    private DirectionalAnimationSet4 _DirectionalStrafeWalkMovement;
 
     [SerializeField]
     private MixerTransition2D _Strafe;
@@ -24,22 +20,6 @@ public class StateStrafe : StateBase
 
     public override bool CanEnterState => true;
 
-    private ITransition CurrentMixer
-        {
-        get
-            {
-                Vector2 direction = new Vector2(Character.Parameters.MovementDirection.x, Character.Parameters.MovementDirection.z);
-
-
-                if (direction == Vector2.zero)
-                    {
-                        return _Idle;
-                    }
-                Debug.Log(direction);
-                return _DirectionalStrafeWalkMovement.GetClip(direction);
-
-            }
-        }
     private void Awake()
         {
             _movementMixer = new LinearMixerState();

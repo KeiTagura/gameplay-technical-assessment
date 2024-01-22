@@ -13,6 +13,7 @@ public sealed class Controller_StateBases : MonoBehaviour
         [SerializeField] private Character _Character;
         [SerializeField] private StateAirborne _Jump;
         [SerializeField] private StateBase _Attack;
+        [SerializeField] private StateHitReact _hitReact;
         [SerializeField] private StateHeavyAttack attackHeavy;
     
         Vector2 moveVect;
@@ -95,25 +96,41 @@ public sealed class Controller_StateBases : MonoBehaviour
         
         public void ClearHits()
         {
+            if (!leftCollider || !rightCollider) return;
             leftHit = false;
             rightHit = false;
             leftCollider.gameObject.SetActive(false);
             rightCollider.gameObject.SetActive(false);
 
         }
-        public void LeftHit()
+        public void LeftHit(Collider col)
         {
-            Debug.Log("Hit Left");
-            leftHit = true;
+                Controller_StateBases sSB = col.transform.parent.GetComponent<Controller_StateBases>();
+            if (sSB != null) { sSB.HitReact(); }
+                leftHit = true;
         }
     
-        public void RightHit()
+        public void RightHit(Collider col)
         {
-            Debug.Log("Hit Right");
+            Controller_StateBases sSB = col.transform.parent.GetComponent<Controller_StateBases>();
+            if (sSB != null) { sSB.HitReact(); }
             rightHit = true;
+            
         }
-
-    public void LeftActive()
+        public void ChargedRight(Collider col)
+        {
+            Controller_StateBases sSB = col.transform.parent.GetComponent<Controller_StateBases>();
+            if (sSB != null) { sSB.RemoveAllHP(); }
+        }
+        public void HitReact()
+            {
+                _hitReact.OnDamageReceived();
+            }
+        public void RemoveAllHP()
+        {
+            Debug.Log($"Remove all HP from :{transform.name}");
+        }
+        public void LeftActive()
             {
                 leftCollider.gameObject.SetActive(true);
             }
@@ -140,6 +157,7 @@ public sealed class Controller_StateBases : MonoBehaviour
             }
         private void UpdateActions()
         {
+        if (!attackHeavy) return;
             if(attackHeavy.combo)
                 {
                     _InputBuffer.Buffer(attackHeavy, 0);
