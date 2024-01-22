@@ -65,7 +65,7 @@ namespace Kei
             moveDirection = Quaternion.AngleAxis(_CameraTransform.rotation.eulerAngles.y, Vector3.up) * moveDirection;
             moveDirection.Normalize();
 
-            // transform.position += moveDirection * 5f * Time.deltaTime;
+             transform.position += moveDirection * 5f * Time.deltaTime;
             _YSpeed += Physics.gravity.y * Time.deltaTime;
         }
 

@@ -24,8 +24,7 @@ public sealed class Controller_StateBases : MonoBehaviour
 
         private StateMachine<StateBase>.InputBuffer _InputBuffer;
 
-        
-        private void Awake()
+    private void Awake()
         {
             ClearHits();
             _InputBuffer = new StateMachine<StateBase>.InputBuffer(_Character.StateMachine);
@@ -40,7 +39,7 @@ public sealed class Controller_StateBases : MonoBehaviour
             UpdateActions();
         }
 
-        private void UpdateMovement()
+    private void UpdateMovement()
         {
             Vector3 input = new Vector3(moveVect.x, 0, moveVect.y);
             if (input == default)
@@ -66,7 +65,7 @@ public sealed class Controller_StateBases : MonoBehaviour
                 forward * input.y;
             */
         _Character.Parameters.MovementDirection = input;
-            logger?.Log(_Character.Parameters.MovementDirection);
+        //logger?.Log(_Character.Parameters.MovementDirection);
         }
 
         public void UpdateMovement_InputAction(InputAction.CallbackContext _context)

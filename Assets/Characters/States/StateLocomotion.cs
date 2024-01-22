@@ -1,6 +1,6 @@
 using UnityEngine;
 using Animancer;
-using Kei.Data;
+
 
 namespace Kei
 {
@@ -15,7 +15,6 @@ namespace Kei
         public ClipTransition Walk => _Walk;
 
 
-        private AnimationSet _LocalCurrentAnimationSet => Character.CurrentAnimationSet;
 
         public ClipTransition CurrentAnimation
         {
@@ -31,25 +30,13 @@ namespace Kei
         }
 
 
-        private void Awake()
-        {
-            ChangeAnimationSet();
-        }
 
-        private void UpdateAnimationSet()
-        {
-            ChangeAnimationSet();
-        }
 
         public override bool CanEnterState => !Character.CharacterMovement.LockOnTarget;
         public override void OnEnterState()
         {
             base.OnEnterState();
 
-            if (_LocalCurrentAnimationSet != Character.CurrentAnimationSet)
-            {
-                ChangeAnimationSet();
-            }
 
             Character.Animancer.Play(CurrentAnimation);
         }
@@ -59,12 +46,6 @@ namespace Kei
             Character.Animancer.Play(CurrentAnimation);
         }
 
-        private void ChangeAnimationSet()
-        {
-            _Idle = Character.CurrentAnimationSet.Idle;
-            _Walk = Character.CurrentAnimationSet.Walk;
-
-        }
 
         private void OnDestroy()
         {

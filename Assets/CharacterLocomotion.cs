@@ -108,7 +108,7 @@ public sealed class CharacterLocomotion : MonoBehaviour
         }
 
         /************************************************************************************************************************/
-
+        /*
         private void OnAnimatorMove()
         {
             var movement = GetRootMotion();
@@ -120,10 +120,16 @@ public sealed class CharacterLocomotion : MonoBehaviour
 
             transform.rotation *= _Character.Animancer.Animator.deltaRotation;
         }
+   */
+            private void OnAnimatorMove()
+                {
+                    Vector3 velocity = _Character.Animancer.Animator.deltaPosition;
+                    //velocity.y = _YSpeed * Time.deltaTime;
+                    _CharacterController.Move(velocity);
+                }
+    /************************************************************************************************************************/
 
-        /************************************************************************************************************************/
-
-        private Vector3 GetRootMotion()
+    private Vector3 GetRootMotion()
         {
             var motion = _Character.StateMachine.CurrentState.RootMotion;
 

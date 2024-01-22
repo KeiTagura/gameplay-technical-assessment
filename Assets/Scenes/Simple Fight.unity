@@ -420,6 +420,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Character: {fileID: 690792669}
   target: {fileID: 1952446453}
+  _DirectionalStrafeWalkMovement:
+    _Up:
+      _FadeDuration: 0.25
+      _Events:
+        _NormalizedTimes: []
+        _Callbacks: []
+        _Names: []
+      _Clip: {fileID: 1827226128182048838, guid: 984bc9e65f31c498382c31de04980a12, type: 3}
+      _Speed: 1
+      _NormalizedStartTime: NaN
+    _Right:
+      _FadeDuration: 0.25
+      _Events:
+        _NormalizedTimes: []
+        _Callbacks: []
+        _Names: []
+      _Clip: {fileID: 1827226128182048838, guid: d89e887f819184f6cb8497420445d02b, type: 3}
+      _Speed: 1
+      _NormalizedStartTime: NaN
+    _Down:
+      _FadeDuration: 0.25
+      _Events:
+        _NormalizedTimes: []
+        _Callbacks: []
+        _Names: []
+      _Clip: {fileID: 1827226128182048838, guid: d9e890e22734944ff8912edd8a3508cd, type: 3}
+      _Speed: 1
+      _NormalizedStartTime: NaN
+    _Left:
+      _FadeDuration: 0.25
+      _Events:
+        _NormalizedTimes: []
+        _Callbacks: []
+        _Names: []
+      _Clip: {fileID: 1827226128182048838, guid: 443600553cef044c39c81e584ef9537f, type: 3}
+      _Speed: 1
+      _NormalizedStartTime: NaN
   _Strafe:
     _FadeDuration: 0.25
     _Events:
@@ -444,6 +481,15 @@ MonoBehaviour:
     _DefaultParameter: {x: 0, y: 0}
     _Type: 1
   _MovementLevel: 0
+  _Idle:
+    _FadeDuration: 0.25
+    _Events:
+      _NormalizedTimes: []
+      _Callbacks: []
+      _Names: []
+    _Clip: {fileID: 1827226128182048838, guid: 9713494b5118d4e1a87945b10c063402, type: 3}
+    _Speed: 1
+    _NormalizedStartTime: NaN
 --- !u!1 &487267012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,6 +1216,7 @@ GameObject:
   - component: {fileID: 1025232237}
   - component: {fileID: 1025232238}
   - component: {fileID: 1025232239}
+  - component: {fileID: 1025232240}
   m_Layer: 0
   m_Name: Player (1)
   m_TagString: Untagged
@@ -1189,8 +1236,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1768739255}
   - {fileID: 1150310788}
+  - {fileID: 1768739255}
   m_Father: {fileID: 1028352056}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1239,9 +1286,9 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Controller_StateBases, Assembly-CSharp
-        m_MethodName: UpdateMovement_InputAction
+      - m_Target: {fileID: 1025232240}
+        m_TargetAssemblyTypeName: Kei.InputAnimancer, Assembly-CSharp
+        m_MethodName: OnMovement
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1320,9 +1367,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Animancer: {fileID: 1768739261}
   _CharacterMovement: {fileID: 1025232239}
-  _Idle: {fileID: 1150310790}
-  _DefaultAnimationSet: {fileID: 0}
-  _CurrentAnimationSet: {fileID: 0}
+  _default: {fileID: 1150310789}
   StateMachine:
     _CurrentState: {fileID: 0}
     _DefaultState: {fileID: 0}
@@ -1339,18 +1384,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _MoveDirection: {x: 0, y: 0}
-  _Grounded: 0
-  CanRoll: 0
-  CanBackstep: 0
-  Dodge: 0
-  Sprint: 0
-  _CameraTransform: {fileID: 0}
+  _CameraTransform: {fileID: 963194228}
   _RotationSeed: 300
-  TargetLock: {fileID: 0}
-  LockOnTarget: 0
-  _PlayerCameraLook: {fileID: 0}
-  _Animancer: {fileID: 0}
-  _CharacterController: {fileID: 0}
+  TargetLock: {fileID: 1952446453}
+  LockOnTarget: 1
+  _Animancer: {fileID: 1768739261}
+  _CharacterController: {fileID: 1025232236}
+--- !u!114 &1025232240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025232232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdc2518065885854886f2b8c6f795f8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Character: {fileID: 1025232238}
+  attackHeavy: {fileID: 0}
+  IsClear: 1
+  leftCollider: {fileID: 0}
+  rightCollider: {fileID: 0}
 --- !u!1 &1028352055
 GameObject:
   m_ObjectHideFlags: 0
@@ -1395,7 +1451,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1150310788}
   - component: {fileID: 1150310791}
-  - component: {fileID: 1150310790}
   - component: {fileID: 1150310789}
   m_Layer: 0
   m_Name: States
@@ -1417,7 +1472,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1025232233}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1150310789
 MonoBehaviour:
@@ -1432,6 +1487,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Character: {fileID: 1025232238}
+  _Strafe:
+    _FadeDuration: 0.25
+    _Events:
+      _NormalizedTimes: []
+      _Callbacks: []
+      _Names: []
+    _Speed: 1
+    _Animations:
+    - {fileID: 1827226128182048838, guid: 9713494b5118d4e1a87945b10c063402, type: 3}
+    - {fileID: 1827226128182048838, guid: 984bc9e65f31c498382c31de04980a12, type: 3}
+    - {fileID: 1827226128182048838, guid: d9e890e22734944ff8912edd8a3508cd, type: 3}
+    - {fileID: 1827226128182048838, guid: 443600553cef044c39c81e584ef9537f, type: 3}
+    - {fileID: 1827226128182048838, guid: d89e887f819184f6cb8497420445d02b, type: 3}
+    _Speeds: []
+    _SynchronizeChildren: 
+    _Thresholds:
+    - {x: 0, y: 0}
+    - {x: 0, y: 1}
+    - {x: 0, y: -1}
+    - {x: -1, y: 0}
+    - {x: 1, y: 0}
+    _DefaultParameter: {x: 0, y: 0}
+    _Type: 0
+  _MovementLevel: 0
   _DirectionalStrafeWalkMovement:
     _Up:
       _FadeDuration: 0.25
@@ -1466,23 +1545,10 @@ MonoBehaviour:
         _NormalizedTimes: []
         _Callbacks: []
         _Names: []
-      _Clip: {fileID: 1827226128182048838, guid: d9e890e22734944ff8912edd8a3508cd, type: 3}
+      _Clip: {fileID: 1827226128182048838, guid: 443600553cef044c39c81e584ef9537f, type: 3}
       _Speed: 1
       _NormalizedStartTime: NaN
   _MagnitudeThreshold: 0.5
---- !u!114 &1150310790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1150310787}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e49177ae2b9e9e64cbdd4c904cbad866, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Character: {fileID: 1025232238}
   _Idle:
     _FadeDuration: 0.25
     _Events:
@@ -1490,15 +1556,6 @@ MonoBehaviour:
       _Callbacks: []
       _Names: []
     _Clip: {fileID: 1827226128182048838, guid: 9713494b5118d4e1a87945b10c063402, type: 3}
-    _Speed: 1
-    _NormalizedStartTime: NaN
-  _Walk:
-    _FadeDuration: 0.25
-    _Events:
-      _NormalizedTimes: []
-      _Callbacks: []
-      _Names: []
-    _Clip: {fileID: 1827226128182048838, guid: 984bc9e65f31c498382c31de04980a12, type: 3}
     _Speed: 1
     _NormalizedStartTime: NaN
 --- !u!114 &1150310791

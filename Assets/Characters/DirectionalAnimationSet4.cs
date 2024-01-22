@@ -41,7 +41,7 @@ namespace Kei
 				case 2: return _Up;
 				case 4: return _Left;
 				case 6: return _Down;
-				default: throw new ArgumentOutOfRangeException("Invalid octant");
+				default: return null;
 			}
 		}
 
