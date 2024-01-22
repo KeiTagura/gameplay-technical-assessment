@@ -45,7 +45,7 @@ public class StateHeavyAttack : StateBase
             if (Character.CheckMotionState())
                 return;
 
-            Character.Movement.TurnTowards((Target.position - transform.position).normalized, _TurnSpeed);
+          //  Character.Movement.TurnTowards((Target.position - transform.position).normalized, _TurnSpeed);
         }
 
     public override bool CanExitState

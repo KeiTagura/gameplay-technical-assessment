@@ -61,6 +61,7 @@ namespace Animancer.FSM
 #if UNITY_ASSERTIONS
             if (!enabled)
                 Debug.LogError($"{nameof(StateBehaviour)} was already disabled before {nameof(OnExitState)}: {this}", this);
+
 #endif
 
             enabled = false;

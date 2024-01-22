@@ -38,21 +38,13 @@ public sealed class Character : MonoBehaviour
         /// </remarks>
         public bool CheckMotionState()
             {
-            StateBase state;
-           // if (Movement.IsGrounded)
-            //    {
-                state = Parameters.MovementDirection == default
-                    ? StateMachine.DefaultState
-                    : StateMachine.Locomotion;
-              //  }
-           // else
-          //      {
-          //      state = StateMachine.Airborne;
-          //      }
-
-            return
-                state != StateMachine.CurrentState &&
-                StateMachine.TryResetState(state);
+                StateBase state = Parameters.MovementDirection == default
+                        ? StateMachine.DefaultState
+                        : StateMachine.Locomotion;
+    
+                return
+                    state != StateMachine.CurrentState &&
+                    StateMachine.TryResetState(state);
             }
 
         /************************************************************************************************************************/

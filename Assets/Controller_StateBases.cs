@@ -35,22 +35,20 @@ public sealed class Controller_StateBases : MonoBehaviour
 
         private void Update()
         {
-           // UpdateMovement();
+            UpdateMovement();
             UpdateCombo();
             UpdateActions();
         }
 
-
         private void UpdateMovement()
         {
             Vector3 input = new Vector3(moveVect.x, 0, moveVect.y);
-            logger?.Log(input);
             if (input == default)
             {
                 _Character.Parameters.MovementDirection = default;
                 return;
             }
-
+            /*
             // Get the camera's forward and right vectors and flatten them onto the XZ plane.
             Transform camera = Camera.main.transform;
 
@@ -66,6 +64,9 @@ public sealed class Controller_StateBases : MonoBehaviour
             _Character.Parameters.MovementDirection =
                 right * input.x +
                 forward * input.y;
+            */
+        _Character.Parameters.MovementDirection = input;
+            logger?.Log(_Character.Parameters.MovementDirection);
         }
 
         public void UpdateMovement_InputAction(InputAction.CallbackContext _context)
@@ -80,7 +81,7 @@ public sealed class Controller_StateBases : MonoBehaviour
                     }
             }
 
-        /************************************************************************************************************************/
+
         bool attack = false;
         public void AttackAction() => attack = true;
         
