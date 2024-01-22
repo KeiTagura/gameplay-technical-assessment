@@ -39,7 +39,6 @@ public class StateHeavyAttack : StateBase
         {
             if (Character.CheckMotionState())
                 return;
-
           //  Character.Movement.TurnTowards((Target.position - transform.position).normalized, _TurnSpeed);
         }
 

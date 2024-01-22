@@ -27,15 +27,6 @@ public sealed class Character : MonoBehaviour
             {
                 StateMachine.InitializeAfterDeserialize();
             }
-
-        /// <summary>
-        /// Check if this <see cref="Character"/> should enter the Idle, Locomotion, or Airborne state depending on
-        /// whether it is grounded and the movement input from the <see cref="Brain"/>.
-        /// </summary>
-        /// <remarks>
-        /// We could add some null checks to this method to support characters that don't have all the standard states,
-        /// such as a character that can't move or a flying character that never lands.
-        /// </remarks>
         public bool CheckMotionState()
             {
                 StateBase state = Parameters.MovementDirection == default
@@ -46,6 +37,4 @@ public sealed class Character : MonoBehaviour
                     state != StateMachine.CurrentState &&
                     StateMachine.TryResetState(state);
             }
-
-        /************************************************************************************************************************/
     }

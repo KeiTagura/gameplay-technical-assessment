@@ -12,11 +12,10 @@ public class StateHitReact : StateBase
                 _Animation.Events.OnEnd = Character.StateMachine.ForceSetDefaultState;
             }
         public void OnDamageReceived()
-        {
+            {
                 Character.Animancer.Play(_Animation, 0.25f, FadeMode.FromStart);
-            Character.StateMachine.ForceSetState(this);
-        }
-   // => Character.StateMachine.ForceSetState(this);
+                Character.StateMachine.ForceSetState(this);
+            }
         private void OnEnable()
             {
                 Character.Animancer.Play(_Animation, 0.25f, FadeMode.FromStart);

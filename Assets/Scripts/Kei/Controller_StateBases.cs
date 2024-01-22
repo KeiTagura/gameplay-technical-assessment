@@ -8,21 +8,29 @@ using UnityEngine.InputSystem;
 
 public sealed class Controller_StateBases : MonoBehaviour
     {
-        /************************************************************************************************************************/
-
         [SerializeField] private Character _Character;
-        [SerializeField] private StateAirborne _Jump;
         [SerializeField] private StateBase _Attack;
         [SerializeField] private StateHitReact _hitReact;
         [SerializeField] private StateHeavyAttack attackHeavy;
     
-        Vector2 moveVect;
         [SerializeField]
         [Seconds(Rule = Value.IsNotNegative)]
         private float _AttackInputTimeOut = 0.5f;
         [Space(20)]
         [SerializeField] SO_Logging logger;
+        [SerializeField] public Collider leftCollider;
+        [SerializeField] public Collider rightCollider;
+    
 
+        bool attack = false;
+        public void AttackAction() => attack = true;
+        
+
+
+        private bool IsClear = true;
+        private bool leftHit = false;
+        private bool rightHit = false;
+        private Vector2 moveVect;
         private StateMachine<StateBase>.InputBuffer _InputBuffer;
 
     private void Awake()
@@ -30,10 +38,7 @@ public sealed class Controller_StateBases : MonoBehaviour
             ClearHits();
             _InputBuffer = new StateMachine<StateBase>.InputBuffer(_Character.StateMachine);
         }
-
-     
-
-        private void Update()
+     private void Update()
         {
             UpdateMovement();
             UpdateCombo();
@@ -48,25 +53,7 @@ public sealed class Controller_StateBases : MonoBehaviour
                 _Character.Parameters.MovementDirection = default;
                 return;
             }
-            /*
-            // Get the camera's forward and right vectors and flatten them onto the XZ plane.
-            Transform camera = Camera.main.transform;
-
-            Vector3 forward = camera.forward;
-            forward.y = 0;
-            forward.Normalize();
-
-            Vector3 right = camera.right;
-            right.y = 0;
-            right.Normalize();
-
-            // Build the movement vector by multiplying the input by those axes.
-            _Character.Parameters.MovementDirection =
-                right * input.x +
-                forward * input.y;
-            */
         _Character.Parameters.MovementDirection = input;
-        //logger?.Log(_Character.Parameters.MovementDirection);
         }
 
         public void UpdateMovement_InputAction(InputAction.CallbackContext _context)
@@ -80,56 +67,43 @@ public sealed class Controller_StateBases : MonoBehaviour
                         moveVect = default;
                     }
             }
-
-
-        bool attack = false;
-        public void AttackAction() => attack = true;
-        
-
-
-        public bool IsClear = true;
-        public Collider leftCollider;
-        public Collider rightCollider;
-        bool leftHit = false;
-        bool rightHit = false;
-
-        
         public void ClearHits()
-        {
-            if (!leftCollider || !rightCollider) return;
-            leftHit = false;
-            rightHit = false;
-            leftCollider.gameObject.SetActive(false);
-            rightCollider.gameObject.SetActive(false);
-
-        }
+            {
+                if (!leftCollider || !rightCollider) return;
+                leftHit = false;
+                rightHit = false;
+                leftCollider.gameObject.SetActive(false);
+                rightCollider.gameObject.SetActive(false);
+            }
         public void LeftHit(Collider col)
-        {
+            {
                 Controller_StateBases sSB = col.transform.parent.GetComponent<Controller_StateBases>();
-            if (sSB != null) { sSB.HitReact(); }
-                leftHit = true;
-        }
+
+                if (sSB != null) { sSB.HitReact(); }
+                    leftHit = true;
+            }
     
         public void RightHit(Collider col)
         {
             Controller_StateBases sSB = col.transform.parent.GetComponent<Controller_StateBases>();
+
             if (sSB != null) { sSB.HitReact(); }
             rightHit = true;
             
         }
         public void ChargedRight(Collider col)
-        {
-            Controller_StateBases sSB = col.transform.parent.GetComponent<Controller_StateBases>();
-            if (sSB != null) { sSB.RemoveAllHP(); }
-        }
+            {
+                Controller_StateBases sSB = col.transform.parent.GetComponent<Controller_StateBases>();
+                if (sSB != null) { sSB.RemoveAllHP(); }
+            }
         public void HitReact()
             {
                 _hitReact.OnDamageReceived();
             }
         public void RemoveAllHP()
-        {
-            Debug.Log($"Remove all HP from :{transform.name}");
-        }
+            {
+                Debug.Log($"Remove all HP from :{transform.name}");
+            }
         public void LeftActive()
             {
                 leftCollider.gameObject.SetActive(true);
@@ -156,21 +130,19 @@ public sealed class Controller_StateBases : MonoBehaviour
                     }
             }
         private void UpdateActions()
-        {
-        if (!attackHeavy) return;
-            if(attackHeavy.combo)
-                {
-                    _InputBuffer.Buffer(attackHeavy, 0);
-                }
+            {
+                if (!attackHeavy) return;
+                    if(attackHeavy.combo)
+                        {
+                            _InputBuffer.Buffer(attackHeavy, 0);
+                        }
 
-            if (attack)
-                {
-                    _InputBuffer.Buffer(_Attack, _AttackInputTimeOut);
-                }
+                    if (attack)
+                        {
+                            _InputBuffer.Buffer(_Attack, _AttackInputTimeOut);
+                        }
 
-        _InputBuffer.Update();
-            attack = false;
-        }
-
-        /************************************************************************************************************************/
+                _InputBuffer.Update();
+                    attack = false;
+            }
     }

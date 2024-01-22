@@ -26,7 +26,7 @@ public class StateLocomotion : StateBase
                 return;
 
             Character.Movement.UpdateSpeedControl();
-            _LocomotionMixer.State.Parameter = 2;// Character.Parameters.ForwardSpeed;
+            _LocomotionMixer.State.Parameter = 2;
             UpdateRotation();
 
         }
